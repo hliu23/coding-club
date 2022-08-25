@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://unpkg.com/jquery.terminal@2.x.x/js/jquery.terminal.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/jquery.terminal@2.x.x/css/jquery.terminal.min.css" />
+</head>
+
+<body>
+  <template id="greetings">
+______          _                 __   _____           _ _               _____ _       _     
+| ___ \        | |               / _| /  __ \         | (_)             /  __ \ |     | |    
+| |_/ /_ __ ___| |__   ___ _   _| |_  | /  \/ ___   __| |_ _ __   __ _  | /  \/ |_   _| |__  
+| ___ \ '__/ _ \ '_ \ / _ \ | | |  _| | |    / _ \ / _` | | '_ \ / _` | | |   | | | | | '_ \ 
+| |_/ / | |  __/ |_) |  __/ |_| | |   | \__/\ (_) | (_| | | | | | (_| | | \__/\ | |_| | |_) |
+\____/|_|  \___|_.__/ \___|\__,_|_|    \____/\___/ \__,_|_|_| |_|\__, |  \____/_|\__,_|_.__/ 
+                                                                  __/ |                      
+                                                                 |___/                       
+  </template>
+  <div id="terminal"></div>
+  <script>
+    
+
+    $(function () {
+      const pictures = [
+      "https://github.com/hliu23/coding-club/blob/main/album/logo.jpg?raw=true",
+      "https://github.com/hliu23/coding-club/blob/main/album/poster.png?raw=true",
+      "https://github.com/hliu23/coding-club/blob/main/album/stats-showdown.jpeg?raw=true",
+      "https://github.com/hliu23/coding-club/blob/main/album/stats-showdown-2.jpeg?raw=true"
+    
+    ]
+    let albumNum = 0;
+    function albumFlip(page) {
+      albumNum += page;
+      if (albumNum >= pictures.length) albumNum = 0;
+      else if (albumNum < 0) albumNum = pictures.length - 1;
+      return [(albumNum+1) + "/" + pictures.length, $("<img src=" + pictures[albumNum] + " height='300'>")];
+    }
+
+      var term = $('#terminal').terminal({
+        album: {
+          next: function() {
+            const res = albumFlip(1);
+            term.echo(res[1]);
+            term.echo(res[0]);
+          },
+          back: function () {
+            const res = albumFlip(-1);
+            term.echo(res[1]);
+            term.echo(res[0]);
+          },
+          exit: function () {
+            term.pop();
+          }
+        },
+        tutorial: function() {
+          const res = $("<p><strong>Build your own website! Tutorial at <a href='https://github.com/jcubic/jquery.terminal/wiki/Getting-Started'>Getting Started</a></strong></p>");
+          term.echo(res);
+        },
+        info: function() {
+          const res = "We are the Brebeuf Coding Club and we meet Thursdays second PRT in Room 121 (the Dig Cit room). We will be learning coding / building projects during meetings and will participate in multiple competitions on different topics, including software design and development, data science, and cybersecurity, during the year. All are welcome regardless of prior experiences with coding. Snacks will be provided. Our motto is: community, competition, coding!";
+          term.echo(res);
+        },
+        competitions: function() {
+          const res = $("<br><div>Competitions<br><a href='https://soic.iupui.edu/mobile-app/'>IUPUI Mobile App Competition</a><br><a href='https://nextech.org/programs/csforgood/'>Nextech CS for Good</a><br><a href='https://www.congressionalappchallenge.us/'>Congressional App Challenge</a><br><a href='https://nextech.org/students/stats-showdown/basketball-2022/'>Nextech Stats Showdown</a><br><a href='https://nextech.org/students/programming-competition-2022/'>Nextech Programming Competition</a><br><a href='https://picoctf.org/'>PicoCTF</a></div><br><div>More info and dates coming...</div>");
+          term.echo(res);
+        },
+        links: function() {
+          term.echo($("<div>Collection of links <a href='https://github.com/hliu23/sites'>here</a></div>"))
+        }
+
+
+      }, {
+        greetings: greetings.innerHTML,
+        onCommandNotFound: function () {
+          let prompt = term.get_prompt();
+          prompt = prompt.slice(0, prompt.length - 2);
+
+          if (prompt === "album") {
+            const help = "\n" +
+                         "Command | Function\n" +
+                         "--------|-----------------------\n" +
+                         "exit    | exit album\n" +
+                         "back    | view previous picture\n" +
+                         "next    | view next picture\n" +
+
+                         "\nNotes: icon from Flaticon.com in picture 2\n";
+            term.echo(help);
+          } else {
+            const help = "\n" +
+                         "Command      | Function\n" +
+                         "-------------|-------------------------------------\n" +
+                         "tutorial     | view tutorial for JQuery Terminal\n" +
+                         "info         | info about coding club\n" +
+                         "competitions | info about competitions\n" +
+                         "links        | useful links\n" + 
+                         "album        | view our album\n";
+
+                         term.echo(help);
+          }
+
+        }
+      });
+
+    })
+  </script>
+</body>
+
+</html>
