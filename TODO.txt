@@ -1,0 +1,4 @@
+Delete the previous picture when using album
+Create scope for functions
+Start from first page of album
+Change name of sites
